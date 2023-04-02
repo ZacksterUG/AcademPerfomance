@@ -36,7 +36,7 @@
             </Border>
             <Grid Height="777">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="25*"/>
                     <ColumnDefinition Width="80*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0"
@@ -48,7 +48,7 @@
                             <Button Style="{StaticResource MaterialDesignFlatLightButton}" Content="О пользователе"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                            <Button Style="{StaticResource MaterialDesignFlatLightButton}" Content="Учебный план"/>
+                            <Button Style="{StaticResource MaterialDesignFlatLightButton}" Content="Учебный план и успеваемость"/>
                         </Border>
                     </StackPanel>
                 </Border>
