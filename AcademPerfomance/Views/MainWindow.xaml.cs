@@ -26,6 +26,7 @@ namespace AcademPerfomance
         {
             InitializeComponent();
             UserInfoText.Text = User.CurrentUser?.ToString();
+            SetTab(AboutTab, null);        
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -34,7 +35,23 @@ namespace AcademPerfomance
                 DragMove();
             }
         }
-
+        private List<Button> TabButtonsList
+        {
+            get => new List<Button> {
+                AboutTab,
+                CurriculumTab
+            };
+                
+        }
+        private void SetTab(object sender, RoutedEventArgs? e)
+        {
+            var ButtonEmitter = (Button)sender;
+            foreach (var tab in TabButtonsList)
+            {
+                if (tab == ButtonEmitter) tab.Style = (Style)FindResource("MaterialDesignFlatMidBgButton");
+                else tab.Style = (Style)FindResource("MaterialDesignFlatLightButton");
+            }
+        }
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;

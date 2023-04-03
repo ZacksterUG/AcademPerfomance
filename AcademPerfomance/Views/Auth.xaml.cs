@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Text.Json.Serialization;
 using AcademPerfomance.Models;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AcademPerfomance.Views
 {
@@ -23,14 +14,36 @@ namespace AcademPerfomance.Views
     /// </summary>
     public partial class Auth : Window
     {
+        private JsonObject ConfigJson;
         public Auth()
         {
             InitializeComponent();
+            try
+            {
+                var data = File.ReadAllText("config.json");
+                var json = JsonDocument.Parse(data).RootElement;
+                SaveLoginChecked.IsChecked = json.GetProperty("saveLogin").GetBoolean();
+                
+                if(SaveLoginChecked.IsChecked == true)
+                {
+                    LoginText.Text = json.GetProperty("login").GetString();
+                }
+            }
+            catch
+            {
+                JsonObject json = new()
+                {
+                    { "login", "" },
+                    {"saveLogin", false }
+                };
+                File.WriteAllText("config.json", json.ToString());
+            }
         }
         private void LoginButton_Click(object sender, RoutedEventArgs e) 
         {
             var login = LoginText.Text;
             var password = PasswordText.Password;
+
             dialog.IsOpen = true;
             try
             {
@@ -46,6 +59,15 @@ namespace AcademPerfomance.Views
                 TextMessage.Text = ex.Message;
                 dialog.IsOpen = true;
             }
+
+
+            ConfigJson = new JsonObject()
+            {
+                { "login", SaveLoginChecked.IsChecked == true? LoginText.Text: "" },
+                {"saveLogin", SaveLoginChecked.IsChecked }
+            };
+            File.WriteAllText("config.json", ConfigJson.ToString());
+
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {

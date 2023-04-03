@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcademPerfomance"
         mc:Ignorable="d"
-        Height="810" Width="1000"
+        Height="610" Width="1000"
         Foreground="#FFD8D8D8"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Background="Transparent"
@@ -43,12 +43,12 @@
                         BorderBrush="Black"
                         Background="#351232"
                         BorderThickness="0 0 1 0">
-                    <StackPanel>
+                    <StackPanel Name="TabButtons">
                         <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                            <Button Style="{StaticResource MaterialDesignFlatLightButton}" Content="О пользователе"/>
+                            <Button Name="AboutTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="О пользователе"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                            <Button Style="{StaticResource MaterialDesignFlatLightButton}" Content="Учебный план и успеваемость"/>
+                            <Button Name="CurriculumTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Учебный план и успеваемость"/>
                         </Border>
                     </StackPanel>
                 </Border>
