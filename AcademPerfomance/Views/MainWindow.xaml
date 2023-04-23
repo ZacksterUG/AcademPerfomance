@@ -34,7 +34,7 @@
                     <Button Grid.Column="1" materialDesign:ButtonAssist.CornerRadius="0" Content="{materialDesign:PackIcon Kind=WindowMinimize, Size=20}" Click="MinimizeWindow"/>
                 </Grid>
             </Border>
-            <Grid Height="777">
+            <Grid Height="579">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25*"/>
                     <ColumnDefinition Width="80*"/>
@@ -42,20 +42,19 @@
                 <Border Grid.Column="0"
                         BorderBrush="Black"
                         Background="#351232"
-                        BorderThickness="0 0 1 0">
+                        BorderThickness="0 0 1 0" >
                     <StackPanel Name="TabButtons">
                         <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                            <Button Name="AboutTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="О пользователе"/>
+                            <Button Name="AboutTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="О пользователе" Tag="1"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                            <Button Name="CurriculumTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Учебный план и успеваемость"/>
+                            <Button Name="CurriculumTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Учебный план и успеваемость" Tag="2"/>
                         </Border>
                     </StackPanel>
                 </Border>
 
-                <StackPanel Grid.Column="1" Margin="30">
-                    <TextBlock FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Top">Информация о пользователе</TextBlock>
-                    <TextBlock Name="UserInfoText" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBlock>
+                <StackPanel Grid.Column="1" Margin="30" Name="mainPagePanel">
+                    <Frame Name="mainPage" NavigationUIVisibility="Hidden"/>
                 </StackPanel>
             </Grid>
         </StackPanel>

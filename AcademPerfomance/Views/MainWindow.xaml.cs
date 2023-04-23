@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.EntityFrameworkCore;
+using AcademPerfomance.Views;
+using AcademPerfomance.Views.Pages;
 
 namespace AcademPerfomance
 {
@@ -22,11 +24,24 @@ namespace AcademPerfomance
     /// </summary>
     public partial class MainWindow : Window
     {
+        public delegate void NavigatorChangeHandler(int number, string name);
+        public event NavigatorChangeHandler? OnNavigatorChange; 
         public MainWindow()
         {
             InitializeComponent();
-            UserInfoText.Text = User.CurrentUser?.ToString();
-            SetTab(AboutTab, null);        
+            OnNavigatorChange += (int number, string name) =>
+            {
+                switch(number)
+                {
+                    case 1:
+                        mainPage.Navigate(new UserInfoPage());
+                        break;
+                    case 2:
+                        mainPage.Navigate(new TestPage());
+                        break;
+                }
+            };
+            SetTab(AboutTab, null);
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -46,6 +61,7 @@ namespace AcademPerfomance
         private void SetTab(object sender, RoutedEventArgs? e)
         {
             var ButtonEmitter = (Button)sender;
+            OnNavigatorChange?.Invoke(int.Parse((string)ButtonEmitter.Tag), ButtonEmitter.Content.ToString());
             foreach (var tab in TabButtonsList)
             {
                 if (tab == ButtonEmitter) tab.Style = (Style)FindResource("MaterialDesignFlatMidBgButton");

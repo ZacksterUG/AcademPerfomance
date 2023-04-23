@@ -22,7 +22,7 @@ namespace AcademPerfomance.Models
         {
             get; set;
         } = null;
-        private static string connectionString;
+        private static readonly string connectionString;
         public static string ConnectionString
         {
             get => string.Format(connectionString, Login ?? "guest", Password ?? "guest");
@@ -37,6 +37,12 @@ namespace AcademPerfomance.Models
             Debug.WriteLine("use");
             optionsBuilder.UseSqlServer(ConnectionString);
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserFio>().HasNoKey();
+            modelBuilder.HasDbFunction(() => GetGroupStudentList(default, default));
+        }
+        public IQueryable<UserFio> GetGroupStudentList(string? uid, int? group_id) => FromExpression(() => GetGroupStudentList(uid, group_id));
         public static void Auth(string login, string password)
         {
             if(Login is not null)
@@ -159,7 +165,7 @@ namespace AcademPerfomance.Models
             Login = (string)pDBlogin.Value;
             Password = (string)pDBpassword.Value;
 
-            var CurrentUser = User.InitCurrentUser(
+            User.InitCurrentUser(
                 unique_id: (string)pUnique_id.Value,
                 user_fio: (string)pUser_fio.Value,
                 role_name: (string)pRole_name.Value,

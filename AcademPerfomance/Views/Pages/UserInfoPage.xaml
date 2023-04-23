@@ -1,0 +1,26 @@
+﻿<Page x:Class="AcademPerfomance.Views.Pages.UserInfoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AcademPerfomance.Views.Pages"
+      mc:Ignorable="d"
+      Foreground="#FFD8D8D8"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="UserInfoPage">
+    <StackPanel>
+        
+        <TextBlock FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Top">Информация о пользователе</TextBlock>
+        <TextBlock Name="UserInfoText" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBlock>
+        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+        <StackPanel Name="GroupInfo" HorizontalAlignment="Left">
+            <TextBlock FontSize="16" Margin="5">Информация о группе</TextBlock>
+            <Button HorizontalAlignment="Left" Width="200" Content="Список группы" Click="ShowGroupStudentList"></Button>
+            <DataGrid Visibility="Hidden" AutoGenerateColumns="False" Margin="0 10 0 0" MaxHeight="350" Width="300" Height="Auto" HorizontalAlignment="Left"  Name="StudentGrid" ItemsSource="{Binding Source=GroupStudents}" IsReadOnly="True">
+                <DataGrid.Columns >
+                    <DataGridTextColumn Width="1*" Header="ФИО Студента" Binding="{Binding student_fio}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </StackPanel>
+</Page>

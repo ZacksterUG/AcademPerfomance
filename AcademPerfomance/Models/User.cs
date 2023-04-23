@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace AcademPerfomance.Models
 {
+    public record UserFio
+    {
+        public string student_fio { get; set; }
+    }
     public record User
     {
         static public User? CurrentUser { get; private set; } = null;
@@ -50,7 +55,6 @@ namespace AcademPerfomance.Models
         {
             string sUser = string.Empty;
             sUser += $"ФИО: {user_fio}\n";
-            sUser += $"Уникальный идентификатор: {unique_id}\n";
             sUser += $"Роль: {role_name}\n";
             sUser += group_number != null? $"Группа: {group_number}\n" : "";
             sUser += student_id_numb != null ? $"Номер студ. билета: {student_id_numb}\n" : "";

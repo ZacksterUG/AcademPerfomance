@@ -14,7 +14,6 @@ namespace AcademPerfomance.Views
     /// </summary>
     public partial class Auth : Window
     {
-        private JsonObject ConfigJson;
         public Auth()
         {
             InitializeComponent();
@@ -60,13 +59,12 @@ namespace AcademPerfomance.Views
                 dialog.IsOpen = true;
             }
 
-
-            ConfigJson = new JsonObject()
+            var json = new JsonObject()
             {
                 { "login", SaveLoginChecked.IsChecked == true? LoginText.Text: "" },
                 {"saveLogin", SaveLoginChecked.IsChecked }
             };
-            File.WriteAllText("config.json", ConfigJson.ToString());
+            File.WriteAllText("config.json", json.ToString());
 
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
