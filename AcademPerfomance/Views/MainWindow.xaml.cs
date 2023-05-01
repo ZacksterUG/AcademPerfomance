@@ -37,7 +37,7 @@ namespace AcademPerfomance
                         mainPage.Navigate(new UserInfoPage());
                         break;
                     case 2:
-                        mainPage.Navigate(new TestPage());
+                        mainPage.Navigate(new GradePage());
                         break;
                 }
             };

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcademPerfomance"
         mc:Ignorable="d"
-        Height="610" Width="1000"
+        Height="710" Width="1000"
         Foreground="#FFD8D8D8"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Background="Transparent"
@@ -34,7 +34,7 @@
                     <Button Grid.Column="1" materialDesign:ButtonAssist.CornerRadius="0" Content="{materialDesign:PackIcon Kind=WindowMinimize, Size=20}" Click="MinimizeWindow"/>
                 </Grid>
             </Border>
-            <Grid Height="579">
+            <Grid Height="677">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25*"/>
                     <ColumnDefinition Width="80*"/>

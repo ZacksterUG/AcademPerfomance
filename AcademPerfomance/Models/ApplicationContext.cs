@@ -34,15 +34,94 @@ namespace AcademPerfomance.Models
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Debug.WriteLine("use");
             optionsBuilder.UseSqlServer(ConnectionString);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserFio>().HasNoKey();
+            modelBuilder.Entity<CurriculumElement>().HasNoKey();
             modelBuilder.HasDbFunction(() => GetGroupStudentList(default, default));
+            modelBuilder.HasDbFunction(() => GetUsersCurriculum(default));
+        }
+        public StudentControlMark? GetStudentControlMark(int? control_event_id)
+        {
+            if (control_event_id == null) return null;
+            var mark = new StudentControlMark();
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pControlEventId = new SqlParameter("@control_event_id", control_event_id);
+            SqlParameter pEventType = new()
+            {
+                ParameterName = "@event_type",
+                SqlDbType = SqlDbType.VarChar,
+                Size = 24,
+                Direction = ParameterDirection.Output
+            };
+            SqlParameter pSubjectName = new()
+            {
+                ParameterName = "@subject_name",
+                SqlDbType = SqlDbType.VarChar,
+                Size = 128,
+                Direction = ParameterDirection.Output
+            };
+            SqlParameter pDepartmentName = new()
+            {
+                ParameterName = "@department_name",
+                SqlDbType = SqlDbType.VarChar,
+                Size = 256,
+                Direction = ParameterDirection.Output
+            };
+            SqlParameter pMarkValue = new()
+            {
+                ParameterName = "@mark_value",
+                SqlDbType = SqlDbType.VarChar,
+                Size = 8,
+                Direction = ParameterDirection.Output
+            };
+            SqlParameter pTeacherFio = new()
+            {
+                ParameterName = "@teacher_fio",
+                SqlDbType = SqlDbType.VarChar,
+                Size = 128,
+                Direction = ParameterDirection.Output
+            };
+            SqlParameter pDate = new()
+            {
+                ParameterName = "@date",
+                SqlDbType = SqlDbType.VarChar,
+                Size = 12,
+                Direction = ParameterDirection.Output
+            };
+
+            Database.ExecuteSqlRaw(
+                $@"exec GetStudentControlMark
+                    @user_identifier,
+	                @control_event_id,
+	                @event_type out,
+	                @subject_name out,
+	                @department_name out,
+	                @mark_value out,
+	                @teacher_fio out,
+	                @date out
+                ", pUserIdentifier,
+                   pControlEventId,
+                   pEventType,
+                   pSubjectName,
+                   pDepartmentName,
+                   pMarkValue,
+                   pTeacherFio,
+                   pDate);
+
+            mark.control_event_id = (int)pControlEventId.Value;
+            mark.event_type = (string)pEventType.Value;
+            mark.subject_name = (string)pSubjectName.Value;
+            mark.department_name = (string)pDepartmentName.Value;
+            mark.mark_value = (string)pMarkValue.Value;
+            mark.teacher_fio = (string)pTeacherFio.Value;
+            mark.date = (string)pDate.Value;
+            return mark;
         }
         public IQueryable<UserFio> GetGroupStudentList(string? uid, int? group_id) => FromExpression(() => GetGroupStudentList(uid, group_id));
+        public IQueryable<CurriculumElement> GetUsersCurriculum(string? uid) => FromExpression(() => GetUsersCurriculum(uid));
         public static void Auth(string login, string password)
         {
             if(Login is not null)
