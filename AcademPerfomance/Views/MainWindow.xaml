@@ -50,6 +50,9 @@
                         <Border BorderBrush="Black" BorderThickness="0 0 0 1">
                             <Button Name="CurriculumTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Учебный план и успеваемость" Tag="2"/>
                         </Border>
+                        <Border BorderBrush="Black" BorderThickness="0 0 0 1">
+                            <Button Name="MarkTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Оценивание" Tag="3"/>
+                        </Border>
                     </StackPanel>
                 </Border>
 

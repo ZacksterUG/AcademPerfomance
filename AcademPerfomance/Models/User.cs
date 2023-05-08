@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace AcademPerfomance.Models
 {
+    public static class Roles
+    {
+        public static readonly string student = "Студент";
+        public static readonly string teacher = "Преподаватель";
+        public static readonly string dekan = "Сотрудник деканата";
+    }
     public record UserFio
     {
         public string student_fio { get; set; }

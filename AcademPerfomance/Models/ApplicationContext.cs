@@ -28,6 +28,8 @@ namespace AcademPerfomance.Models
             get => string.Format(connectionString, Login ?? "guest", Password ?? "guest");
         }
         public DbSet<Institute> Institute { get; set; } = null!;
+        public DbSet<Department> Department { get; set; } = null!;
+        public DbSet<GroupView> GroupViews { get; set; } = null!;
         static ApplicationContext()
         {
             connectionString = ConfigurationManager.ConnectionStrings["MainConnection"].ConnectionString;
@@ -42,6 +44,12 @@ namespace AcademPerfomance.Models
             modelBuilder.Entity<CurriculumElement>().HasNoKey();
             modelBuilder.HasDbFunction(() => GetGroupStudentList(default, default));
             modelBuilder.HasDbFunction(() => GetUsersCurriculum(default));
+            modelBuilder.HasDbFunction(() => GetGroupsCurriculum(default, default));
+            modelBuilder.Entity<GroupView>(g =>
+            {
+                g.HasNoKey();
+                g.ToView("v_group");
+            });
         }
         public StudentControlMark? GetStudentControlMark(int? control_event_id)
         {
@@ -122,6 +130,7 @@ namespace AcademPerfomance.Models
         }
         public IQueryable<UserFio> GetGroupStudentList(string? uid, int? group_id) => FromExpression(() => GetGroupStudentList(uid, group_id));
         public IQueryable<CurriculumElement> GetUsersCurriculum(string? uid) => FromExpression(() => GetUsersCurriculum(uid));
+        public IQueryable<CurriculumElement> GetGroupsCurriculum(string? uid, int? group_id) => FromExpression(() => GetGroupsCurriculum(uid, group_id));
         public static void Auth(string login, string password)
         {
             if(Login is not null)

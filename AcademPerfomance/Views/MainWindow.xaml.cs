@@ -22,6 +22,7 @@ namespace AcademPerfomance
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    
     public partial class MainWindow : Window
     {
         public delegate void NavigatorChangeHandler(int number, string name);
@@ -29,17 +30,30 @@ namespace AcademPerfomance
         public MainWindow()
         {
             InitializeComponent();
+            if(User.CurrentUser?.role_name == Roles.student)
+            {
+                MarkTab.Visibility = Visibility.Collapsed;
+            }
+            if(User.CurrentUser?.role_name != Roles.student)
+            {
+                CurriculumTab.Visibility = Visibility.Collapsed;
+            }
             OnNavigatorChange += (int number, string name) =>
             {
+                Page? page = null;
                 switch(number)
                 {
                     case 1:
-                        mainPage.Navigate(new UserInfoPage());
+                        page = new UserInfoPage();
                         break;
                     case 2:
-                        mainPage.Navigate(new GradePage());
+                        page = new GradePage();
+                        break;
+                    case 3:
+                        page = new MarkPage();
                         break;
                 }
+                mainPage.Navigate(page);
             };
             SetTab(AboutTab, null);
         }
@@ -52,9 +66,11 @@ namespace AcademPerfomance
         }
         private List<Button> TabButtonsList
         {
-            get => new List<Button> {
+            get => new()
+            {
                 AboutTab,
-                CurriculumTab
+                CurriculumTab,
+                MarkTab,
             };
                 
         }

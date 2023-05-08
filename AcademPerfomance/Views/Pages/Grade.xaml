@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:AcademPerfomance.Views"
       mc:Ignorable="d" 
       Foreground="#FFD8D8D8" d:DesignWidth="800"
-      Title="TestPage" Height="580">
+      Title="TestPage" Height="600">
 
     <StackPanel Margin="5">
         <TextBlock HorizontalAlignment="Center" FontSize="16" Margin="5">Учебный план</TextBlock>
