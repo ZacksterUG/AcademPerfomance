@@ -16,7 +16,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Border Width="Auto" Height="Auto" CornerRadius="10 10 10 10"
             Background="#2d1232"
-            MouseDown="Border_MouseDown">
+            MouseDown="Border_MouseDown"
+            KeyDown="Border_KeyDown">
         <materialDesign:DialogHost Name="dialog">
             <materialDesign:DialogHost.DialogContent>
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AcademPerfomance.Models
 {
-    public class GroupView
+    public record GroupView
     {
         public int group_id { get; set; }
         public string group_number { get; set; } = null!;

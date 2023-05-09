@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Text.Json.Serialization;
 using AcademPerfomance.Models;
+using System.Threading.Tasks;
 
 namespace AcademPerfomance.Views
 {
@@ -22,11 +23,13 @@ namespace AcademPerfomance.Views
                 var data = File.ReadAllText("config.json");
                 var json = JsonDocument.Parse(data).RootElement;
                 SaveLoginChecked.IsChecked = json.GetProperty("saveLogin").GetBoolean();
-                
-                if(SaveLoginChecked.IsChecked == true)
+
+                if (SaveLoginChecked.IsChecked == true)
                 {
                     LoginText.Text = json.GetProperty("login").GetString();
+                    PasswordText.Focus();
                 }
+                else LoginText.Focus();
             }
             catch
             {
@@ -83,6 +86,14 @@ namespace AcademPerfomance.Views
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Border_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                LoginButton_Click(sender, new RoutedEventArgs());
+            }
         }
     }
 }

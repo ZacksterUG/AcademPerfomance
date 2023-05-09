@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AcademPerfomance.Models
 {
-   public class Institute
+   public record Institute
    {
         [Key]
         public int institute_id { get; set; }

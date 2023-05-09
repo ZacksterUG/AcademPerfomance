@@ -15,6 +15,8 @@ namespace AcademPerfomance.Models
     }
     public record UserFio
     {
+        public string user_unique_id { get; set; }
+        public int user_id { get; set; }
         public string student_fio { get; set; }
     }
     public record User

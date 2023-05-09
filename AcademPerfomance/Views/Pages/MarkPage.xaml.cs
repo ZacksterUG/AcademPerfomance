@@ -45,6 +45,8 @@ namespace AcademPerfomance.Views.Pages
         {
             ControlEvent.EmptyControlEvent()
         };
+        private List<UserFio> studentList = new();
+        private List<EventTypeMarksView> validMarkList = new();
         public MarkPage()
         {
             InitializeComponent();
@@ -56,6 +58,8 @@ namespace AcademPerfomance.Views.Pages
             SemesterCB.ItemsSource = semesterList;
             CurriculumElementCB.ItemsSource = curriculumElementsList;
             ControlEventCB.ItemsSource = controlEventList;
+            StudentCB.ItemsSource = studentList;
+            MarkCB.ItemsSource = validMarkList;
         }
         private void ResetFromIndex(int index)
         {
@@ -101,16 +105,20 @@ namespace AcademPerfomance.Views.Pages
             }
             if (index <= 5)
             {
+                studentList.Clear();
+                StudentCB.Items.Refresh();
                 StudentCB.IsEnabled = false;
                 StudentCB.SelectedIndex = 0;
             }
             if (index <= 6)
             {
                 DateCB.IsEnabled = false;
-                DateCB.SelectedIndex = 0;
+                DateCB.SelectedDate = null;
             }
             if (index <= 7)
             {
+                validMarkList.Clear();
+                MarkCB.Items.Refresh();
                 MarkCB.IsEnabled = false;
                 MarkCB.SelectedIndex = 0;
             }
@@ -141,7 +149,10 @@ namespace AcademPerfomance.Views.Pages
             if (department.department_id == -1) return;
 
             using ApplicationContext context = new();
-            var groups = context.GroupViews.Where(x => x.department_id == department.department_id).ToList();
+            var groups = context.GroupViews
+                .Where(x => x.department_id == department.department_id
+                                                    && x.is_group_graduated == false)
+                .ToList();
             groupViews.AddRange(groups);
             GroupCB.IsEnabled = true;
             GroupCB.Items.Refresh();
@@ -199,6 +210,84 @@ namespace AcademPerfomance.Views.Pages
             controlEventList.AddRange(controlEvents);
             ControlEventCB.IsEnabled = true;
             ControlEventCB.Items.Refresh();
+        }
+
+        private void ControlEventCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 0) return;
+
+            var controlEvent = e.AddedItems[0] as ControlEvent;
+            ResetFromIndex(5);
+
+            if (controlEvent.control_id == -1) return;
+
+            using ApplicationContext context = new();
+            var students = context.GetGroupStudentList(User.CurrentUser.unique_id, (GroupCB.SelectedItem as GroupView).group_id);
+            studentList.AddRange(students);
+            StudentCB.IsEnabled = true;
+            StudentCB.Items.Refresh();
+            DateCB.IsEnabled = true;
+            DateCB.SelectedDate = DateTime.Now;
+
+            var valid_marks = context.EventTypeMarks.Where(et => et.event_type_id == (ControlEventCB.SelectedItem as ControlEvent).control_type_id);
+            validMarkList.AddRange(valid_marks);
+            MarkCB.IsEnabled = true;
+            MarkCB.Items.Refresh();
+
+            if(studentList.Count > 0)
+            {
+                var firstStudent = studentList[0];
+                var control_event_id = (ControlEventCB.SelectedItem as ControlEvent).control_id;
+                SetCurrentMarkIfExists(firstStudent, control_event_id);
+            }
+        }
+        private void SetCurrentMarkIfExists(UserFio User, int control_event_id)
+        {
+            using ApplicationContext context = new();
+            var mark = context.GetStudentControlMark(control_event_id, User.user_unique_id);
+            if(mark.mark_value != "-")
+            {
+                DateCB.SelectedDate = DateTime.ParseExact(mark.date, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                if (validMarkList.Count > 0 && validMarkList[0].mark_value == "Нет оценки") validMarkList.RemoveAt(0);
+                MarkCB.Items.Refresh();
+                MarkCB.SelectedItem = validMarkList.Find(x => x.mark_value == mark.mark_value);
+            }
+            else
+            {
+                if (validMarkList.Count == 0 || validMarkList[0].mark_value != "Нет оценки") validMarkList.Insert(0, EventTypeMarksView.EmptyEventTypeMark());
+                MarkCB.Items.Refresh();
+                DateCB.SelectedDate = DateTime.Now;
+                MarkCB.SelectedIndex = 0;
+            }
+        }
+
+        private void StudentCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 0) return;
+
+            var student = e.AddedItems[0] as UserFio;
+            SetCurrentMarkIfExists(student, (ControlEventCB.SelectedItem as ControlEvent).control_id);
+        }
+
+        private void MarkCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 0) return;
+
+            var mark = e.AddedItems[0] as EventTypeMarksView;
+
+            if (mark.mark_value == "Нет оценки") SaveBtn.IsEnabled = false;
+            else SaveBtn.IsEnabled = true;
+        }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            using ApplicationContext context = new ApplicationContext();
+            int control_event_id = (ControlEventCB.SelectedItem as ControlEvent).control_id;
+            int student_id = (StudentCB.SelectedItem as UserFio).user_id;
+            DateTime date = DateCB.SelectedDate ?? DateTime.Now;
+            int mark_type_id = (MarkCB.SelectedItem as EventTypeMarksView).mark_type_id;
+
+            context.SetStudentMark(control_event_id, student_id, date, mark_type_id);
         }
     }
 }

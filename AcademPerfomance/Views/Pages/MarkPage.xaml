@@ -47,11 +47,11 @@
         <ComboBox Name="GroupCB" FontSize="16" SelectedIndex="0" Grid.Row="2" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False" ItemsSource="{Binding}" DisplayMemberPath="group_number" SelectedValue="group_id" SelectionChanged="GroupCB_SelectionChanged"></ComboBox>
         <ComboBox Name="SemesterCB" FontSize="16" SelectedIndex="0" Grid.Row="3" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False" SelectionChanged="SemesterCB_SelectionChanged"></ComboBox>
         <ComboBox Name="CurriculumElementCB" FontSize="16" SelectedIndex="0" Grid.Row="4" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False" ItemsSource="{Binding}" DisplayMemberPath="subject_name" SelectionChanged="CurriculumElementCB_SelectionChanged"></ComboBox>
-        <ComboBox Name="ControlEventCB" FontSize="16" SelectedIndex="0" Grid.Row="5" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False" ItemsSource="{Binding}" DisplayMemberPath="control_name" SelectedValue="control_id"></ComboBox>
-        <ComboBox Name="StudentCB" FontSize="16" SelectedIndex="0" Grid.Row="7" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False"></ComboBox>
-        <ComboBox Name="DateCB" FontSize="16" SelectedIndex="0" Grid.Row="8" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False"></ComboBox>
-        <ComboBox Name="MarkCB" FontSize="16" SelectedIndex="0" Grid.Row="9" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False"></ComboBox>
-        <Button Grid.Column="1" Grid.Row="10" Margin="20 20 20 0" Content="Сохранить изменения" FontSize="16" IsEnabled="False"></Button>
+        <ComboBox Name="ControlEventCB" FontSize="16" SelectedIndex="0" Grid.Row="5" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False" ItemsSource="{Binding}" DisplayMemberPath="control_name" SelectedValue="control_id" SelectionChanged="ControlEventCB_SelectionChanged"></ComboBox>
+        <ComboBox Name="StudentCB" FontSize="16" SelectedIndex="0" Grid.Row="7" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False" ItemsSource="{Binding}" DisplayMemberPath="student_fio" SelectedValue="user_unique_id" SelectionChanged="StudentCB_SelectionChanged"></ComboBox>
+        <DatePicker Name="DateCB" FontSize="16" Grid.Row="8" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False"></DatePicker>
+        <ComboBox Name="MarkCB" FontSize="16" SelectedIndex="0" Grid.Row="9" Grid.Column="1" Margin="10 0 10 0" IsEnabled="False" ItemsSource="{Binding}" DisplayMemberPath="mark_value" SelectedValue="mark_type_id" SelectionChanged="MarkCB_SelectionChanged"></ComboBox>
+        <Button Name="SaveBtn" Grid.Column="1" Grid.Row="10" Margin="20 20 20 0" Content="Сохранить изменения" FontSize="16" IsEnabled="False" Click="SaveBtn_Click"></Button>
         
     </Grid>
     </StackPanel>

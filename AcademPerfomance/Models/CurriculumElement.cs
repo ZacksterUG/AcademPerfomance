@@ -10,6 +10,7 @@ namespace AcademPerfomance.Models
     {
         public int control_id { get; set; }
         public string control_name { get; set; } = null!;
+        public int control_type_id { get; set; }
         public static ControlEvent EmptyControlEvent()
         {
             return new ControlEvent
@@ -27,8 +28,10 @@ namespace AcademPerfomance.Models
         public int year { get; set; }
         public int? control_id { get; set; }
         public string control_name { get; set; } = null!;
+        public int? control_type_id { get; set; }
         public int? course_event_id { get; set; }
         public string course_event_name { get; set; } = null!;
+        public int? course_event_type_id { get; set; }
         public List<ControlEvent> ControlEvents
         {
             get {
@@ -39,6 +42,7 @@ namespace AcademPerfomance.Models
                         {
                             control_id = (int)control_id,
                             control_name = control_name,
+                            control_type_id = control_type_id ?? -1
                         };
                         l.Add(c);
                     }
@@ -48,6 +52,7 @@ namespace AcademPerfomance.Models
                         {
                             control_id = (int)course_event_id,
                             control_name = course_event_name,
+                            control_type_id = course_event_type_id ?? -1
                         };
                         l.Add(c);
                     }

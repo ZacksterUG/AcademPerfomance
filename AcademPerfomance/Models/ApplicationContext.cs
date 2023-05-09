@@ -30,6 +30,7 @@ namespace AcademPerfomance.Models
         public DbSet<Institute> Institute { get; set; } = null!;
         public DbSet<Department> Department { get; set; } = null!;
         public DbSet<GroupView> GroupViews { get; set; } = null!;
+        public DbSet<EventTypeMarksView> EventTypeMarks { get; set; } = null!;
         static ApplicationContext()
         {
             connectionString = ConfigurationManager.ConnectionStrings["MainConnection"].ConnectionString;
@@ -42,6 +43,10 @@ namespace AcademPerfomance.Models
         {
             modelBuilder.Entity<UserFio>().HasNoKey();
             modelBuilder.Entity<CurriculumElement>().HasNoKey();
+            modelBuilder.Entity<Department>()
+                .HasOne(d => d.institute)
+                .WithMany(i => i.departments);
+
             modelBuilder.HasDbFunction(() => GetGroupStudentList(default, default));
             modelBuilder.HasDbFunction(() => GetUsersCurriculum(default));
             modelBuilder.HasDbFunction(() => GetGroupsCurriculum(default, default));
@@ -50,12 +55,38 @@ namespace AcademPerfomance.Models
                 g.HasNoKey();
                 g.ToView("v_group");
             });
+            modelBuilder.Entity<EventTypeMarksView>(g =>
+            {
+                g.HasNoKey();
+                g.ToView("v_event_type_marks");
+            });
         }
-        public StudentControlMark? GetStudentControlMark(int? control_event_id)
+        public void SetStudentMark(int control_event_id, int student_id, DateTime date, int mark_type_id)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pControlEventId = new SqlParameter("@control_event_id", control_event_id);
+            SqlParameter pStudentId = new SqlParameter("@student_id", student_id);
+            SqlParameter pDate = new SqlParameter("@date", date);
+            SqlParameter pMarkTypeId = new SqlParameter("@mark_type_id", mark_type_id);
+
+            Database.ExecuteSqlRaw($@"
+            exec SetStudentMark
+	             @user_identifier,
+	             @control_event_id,
+	             @student_id,
+	             @date,
+	             @mark_type_id", 
+                 pUserIdentifier,
+                 pControlEventId,
+                 pStudentId,
+                 pDate,
+                 pMarkTypeId);
+        }
+        public StudentControlMark? GetStudentControlMark(int? control_event_id, string? unique_id = null)
         {
             if (control_event_id == null) return null;
             var mark = new StudentControlMark();
-            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", unique_id ?? User.CurrentUser?.unique_id);
             SqlParameter pControlEventId = new SqlParameter("@control_event_id", control_event_id);
             SqlParameter pEventType = new()
             {
