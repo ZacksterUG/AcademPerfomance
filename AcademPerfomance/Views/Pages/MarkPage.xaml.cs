@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AcademPerfomance.Views.Pages
 {
@@ -287,7 +288,17 @@ namespace AcademPerfomance.Views.Pages
             DateTime date = DateCB.SelectedDate ?? DateTime.Now;
             int mark_type_id = (MarkCB.SelectedItem as EventTypeMarksView).mark_type_id;
 
-            context.SetStudentMark(control_event_id, student_id, date, mark_type_id);
+            try
+            {
+                context.SetStudentMark(control_event_id, student_id, date, mark_type_id);
+                MainWindow.mainWindow.DialogMessage.Text = "Изменения были успешно сохранены!";
+                MainWindow.mainWindow.dialog.IsOpen = true;
+            }
+            catch (Exception error)
+            {
+                MainWindow.mainWindow.DialogMessage.Text = error.Message;
+                MainWindow.mainWindow.dialog.IsOpen = true;
+            }
         }
     }
 }

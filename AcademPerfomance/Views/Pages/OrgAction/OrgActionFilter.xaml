@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="AcademPerfomance.Views.Pages.OrgAction.OrgActionFilter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AcademPerfomance.Views.Pages.OrgAction"
+             mc:Ignorable="d"
+             Foreground="#FFD8D8D8"
+             FontSize="16"
+             d:DesignWidth="800" Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+            <ColumnDefinition Width="6*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label Name="l1" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Right" Content="Институт/Высшая школа:"></Label>
+        <ComboBox Name="InstituteCB" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding}" DisplayMemberPath="name" SelectedValue="institute_id" SelectedIndex="0" SelectionChanged="InstituteCB_SelectionChanged"></ComboBox>
+
+        <Label Name="l2" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Right" Content="Кафедра:"></Label>
+        <ComboBox Name="DepartmentCB" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding}" DisplayMemberPath="name" SelectedValue="department_id" IsEnabled="False" SelectedIndex="0" SelectionChanged="DepartmentCB_SelectionChanged"></ComboBox>
+
+        <Label Name="l3" Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Right" Content="Направление:"></Label>
+        <ComboBox Name="DirectionCB" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding}" DisplayMemberPath="direction_name" SelectedValue="direction_id" IsEnabled="False" SelectedIndex="0" SelectionChanged="DirectionCB_SelectionChanged"></ComboBox>
+
+        <Label Name="l4" Grid.Row="3" Grid.Column="0"  HorizontalAlignment="Right" Content="Группа:"></Label>
+        <ComboBox Name="GroupCB" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding}" DisplayMemberPath="group_number" SelectedValue="group_id" IsEnabled="False" SelectedIndex="0" SelectionChanged="GroupCB_SelectionChanged"></ComboBox>
+
+        <Label Name="l5" Grid.Row="4" Grid.Column="0"  HorizontalAlignment="Right" Content="Семестр:"></Label>
+        <ComboBox Name="SemesterCB" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding}" SelectedIndex="0" IsEnabled="False" SelectionChanged="SemesterCB_SelectionChanged"></ComboBox>
+
+        <Label Name="l6" Grid.Row="5" Grid.Column="0"  HorizontalAlignment="Right" Content="Дисциплина:"></Label>
+        <ComboBox Name="CurriculumElementCB" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding}" DisplayMemberPath="subject_name" SelectedValue="curriculum_id" IsEnabled="False" SelectedIndex="0" SelectionChanged="CurriculumElementCB_SelectionChanged"></ComboBox>
+
+        <Label Name="l7" Grid.Row="6" Grid.Column="0"  HorizontalAlignment="Right" Content="Мероприятие:"/>
+        <ComboBox Name="ControlEventCB" Grid.Row="6" Grid.Column="1" ItemsSource="{Binding}" DisplayMemberPath="control_name" SelectedValue="control_id" IsEnabled="False" SelectedIndex="0"></ComboBox>
+    </Grid>
+</UserControl>

@@ -20,7 +20,6 @@
             KeyDown="Border_KeyDown">
         <materialDesign:DialogHost Name="dialog">
             <materialDesign:DialogHost.DialogContent>
-
                 <StackPanel HorizontalAlignment="Center" Width="300" Background="#231232">
                     <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Name="TextMessage"  Height="45" Margin="40" Foreground="White"/>
                     <Button Margin="120 40 120 40" Content="ОК" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Height="40"/>

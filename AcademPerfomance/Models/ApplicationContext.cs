@@ -31,6 +31,7 @@ namespace AcademPerfomance.Models
         public DbSet<Department> Department { get; set; } = null!;
         public DbSet<GroupView> GroupViews { get; set; } = null!;
         public DbSet<EventTypeMarksView> EventTypeMarks { get; set; } = null!;
+        public DbSet<Direction> Directions { get; set; } = null!;
         static ApplicationContext()
         {
             connectionString = ConfigurationManager.ConnectionStrings["MainConnection"].ConnectionString;
@@ -46,6 +47,10 @@ namespace AcademPerfomance.Models
             modelBuilder.Entity<Department>()
                 .HasOne(d => d.institute)
                 .WithMany(i => i.departments);
+            modelBuilder.Entity<Direction>()
+                .ToTable("direction")
+                .HasOne(d => d.department)
+                .WithMany(d => d.directions);
 
             modelBuilder.HasDbFunction(() => GetGroupStudentList(default, default));
             modelBuilder.HasDbFunction(() => GetUsersCurriculum(default));
@@ -60,6 +65,63 @@ namespace AcademPerfomance.Models
                 g.HasNoKey();
                 g.ToView("v_event_type_marks");
             });
+        }
+        public void CreateDirection(string direction_name, int department_id, byte semester_count, string code)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pDirectionName = new SqlParameter("@direction_name", direction_name);
+            SqlParameter pDepartmentId = new SqlParameter("@department_id", department_id);
+            SqlParameter pSemesterCount = new SqlParameter("@semester_count", semester_count);
+            SqlParameter pCode = new SqlParameter("@code", code);
+
+            Database.ExecuteSqlRaw($@"exec CreateDirection
+	                                    @user_identifier,
+	                                    @direction_name,
+	                                    @department_id,
+	                                    @semester_count,
+	                                    @code", 
+                                        pUserIdentifier,
+                                        pDirectionName,
+                                        pDepartmentId,
+                                        pSemesterCount,
+                                        pCode
+            );
+        }
+        public void EditDirection(int direction_id, string direction_name, int department_id, byte semester_count, string code)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pDirectionId = new SqlParameter("@direction_id", direction_id);
+            SqlParameter pDirectionName = new SqlParameter("@direction_name", direction_name);
+            SqlParameter pDepartmentId = new SqlParameter("@department_id", department_id);
+            SqlParameter pSemesterCount = new SqlParameter("@semester_count", semester_count);
+            SqlParameter pCode = new SqlParameter("@code", code);
+
+            Database.ExecuteSqlRaw($@"exec EditDirection
+	                                    @user_identifier,
+                                        @direction_id,
+	                                    @direction_name,
+	                                    @department_id,
+	                                    @semester_count,
+	                                    @code",
+                                        pUserIdentifier,
+                                        pDirectionId,
+                                        pDirectionName,
+                                        pDepartmentId,
+                                        pSemesterCount,
+                                        pCode
+            );
+        }
+        public void DeleteDirection(int direction_id)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pDirectionId = new SqlParameter("@direction_id", direction_id);
+
+            Database.ExecuteSqlRaw($@"exec DeleteDirection
+	                                    @user_identifier,
+	                                    @direction_id",
+                                        pUserIdentifier,
+                                        pDirectionId
+            );
         }
         public void SetStudentMark(int control_event_id, int student_id, DateTime date, int mark_type_id)
         {

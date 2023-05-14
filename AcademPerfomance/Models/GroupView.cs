@@ -11,7 +11,7 @@ namespace AcademPerfomance.Models
         public int group_id { get; set; }
         public string group_number { get; set; } = null!;
         public int admission_year { get; set; }
-        public Byte semester_count { get; set; }
+        public byte semester_count { get; set; }
         public int group_current_course { get; set; }
         public bool is_group_graduated { get; set; }
         public int institute_id { get; set; }

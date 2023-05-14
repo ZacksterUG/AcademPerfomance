@@ -26,10 +26,21 @@ namespace AcademPerfomance
     public partial class MainWindow : Window
     {
         public delegate void NavigatorChangeHandler(int number, string name);
+        public static MainWindow? mainWindow { get; private set; } = null;
         public event NavigatorChangeHandler? OnNavigatorChange; 
+        public void ShowMessage(string message)
+        {
+            DialogMessage.Text = message;
+            dialog.IsOpen = true;
+        }
         public MainWindow()
         {
             InitializeComponent();
+            if(mainWindow != null)
+            {
+                throw (new Exception("Главное окно уже запущено!"));
+            };
+            mainWindow = this;
             if(User.CurrentUser?.role_name == Roles.student)
             {
                 MarkTab.Visibility = Visibility.Collapsed;
@@ -37,6 +48,11 @@ namespace AcademPerfomance
             if(User.CurrentUser?.role_name != Roles.student)
             {
                 CurriculumTab.Visibility = Visibility.Collapsed;
+            }
+            if(User.CurrentUser?.role_name != Roles.dekan)
+            {
+                OrganiseActionsTab.Visibility = Visibility.Collapsed;
+                AdminActionsTab.Visibility = Visibility.Collapsed;
             }
             OnNavigatorChange += (int number, string name) =>
             {
@@ -51,6 +67,9 @@ namespace AcademPerfomance
                         break;
                     case 3:
                         page = new MarkPage();
+                        break;
+                    case 4:
+                        page = new OrgActionPage();
                         break;
                 }
                 mainPage.Navigate(page);
@@ -71,6 +90,8 @@ namespace AcademPerfomance
                 AboutTab,
                 CurriculumTab,
                 MarkTab,
+                OrganiseActionsTab,
+                AdminActionsTab
             };
                 
         }

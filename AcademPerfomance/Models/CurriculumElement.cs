@@ -22,6 +22,7 @@ namespace AcademPerfomance.Models
     }
     public record CurriculumElement
     {
+        public int curriculum_id { get; set; }
         public int semester { get; set; }
         public string subject_name { get; set; } = null!;
         public string department_name { get; set; } = null!;
@@ -63,6 +64,7 @@ namespace AcademPerfomance.Models
         {
             return new CurriculumElement
             {
+                curriculum_id = -1,
                 subject_name = "Не выбрано",
             };
         }
