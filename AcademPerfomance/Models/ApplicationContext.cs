@@ -30,6 +30,7 @@ namespace AcademPerfomance.Models
         public DbSet<Institute> Institute { get; set; } = null!;
         public DbSet<Department> Department { get; set; } = null!;
         public DbSet<GroupView> GroupViews { get; set; } = null!;
+        public DbSet<SubjectView> SubjectViews { get; set; } = null!;
         public DbSet<EventTypeMarksView> EventTypeMarks { get; set; } = null!;
         public DbSet<Direction> Directions { get; set; } = null!;
         static ApplicationContext()
@@ -64,6 +65,11 @@ namespace AcademPerfomance.Models
             {
                 g.HasNoKey();
                 g.ToView("v_event_type_marks");
+            });
+            modelBuilder.Entity<SubjectView>(s =>
+            {
+                s.HasNoKey();
+                s.ToView("v_subject");
             });
         }
         public void CreateDirection(string direction_name, int department_id, byte semester_count, string code)
@@ -123,6 +129,94 @@ namespace AcademPerfomance.Models
                                         pDirectionId
             );
         }
+        public void EditSubject(int dep_subject_id, int department_id, string subject_name)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pDepSubjectId = new SqlParameter("@dep_subject_id", dep_subject_id);
+            SqlParameter pDepartmentId = new SqlParameter("@department_id", department_id);
+            SqlParameter pSubjectName = new SqlParameter("@subject_name", subject_name);
+
+            Database.ExecuteSqlRaw($@"
+                exec EditSubject
+                    @user_identifier,
+	                @dep_subject_id,
+	                @department_id,
+	                @subject_name",
+                    pUserIdentifier,
+                    pDepSubjectId,
+                    pDepartmentId,
+                    pSubjectName
+            );
+        }
+        public void AddSubject(int dep_subject_id, int department_id, string subject_name)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pDepartmentId = new SqlParameter("@department_id", department_id);
+            SqlParameter pSubjectName = new SqlParameter("@subject_name", subject_name);
+
+            Database.ExecuteSqlRaw($@"
+                exec AddSubject
+                    @user_identifier,
+	                @department_id,
+	                @subject_name",
+                    pUserIdentifier,
+                    pDepartmentId,
+                    pSubjectName
+            );
+        }
+        public void AppendCurriculumSubject(int group_id, int dep_subject_id, int semester)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pGroupId = new SqlParameter("@group_id", group_id);
+            SqlParameter pDepSubjectId = new SqlParameter("@dep_subject_id", dep_subject_id);
+            SqlParameter pSemester = new SqlParameter("@semester", semester);
+
+            Database.ExecuteSqlRaw($@"
+                exec AppendCurriculumSubject
+                     @user_identifier,
+	                 @group_id,
+	                 @dep_subject_id,
+	                 @semester,
+	                 null,
+	                 null",
+                     pUserIdentifier,
+                     pGroupId,
+                     pDepSubjectId,
+                     pSemester
+            );
+        }
+        public void EditCurriculumElement(int curriculum_element_id, int dep_subject_id, int semester)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pCurriculumElementId = new SqlParameter("@curriculum_element_id", curriculum_element_id);
+            SqlParameter pDepSubjectId = new SqlParameter("@dep_subject_id", dep_subject_id);
+            SqlParameter pSemester = new SqlParameter("@semester", semester);
+
+            Database.ExecuteSqlRaw($@"
+                exec EditCurriculumElement
+                     @user_identifier,
+	                 @curriculum_element_id,
+	                 @dep_subject_id,
+	                 @semester",
+                     pUserIdentifier,
+                     pCurriculumElementId,
+                     pDepSubjectId,
+                     pSemester
+            );
+        }
+        public void DeleteCurriculumElement(int curriculum_element_id, int dep_subject_id, int semester)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pCurriculumElementId = new SqlParameter("@curriculum_element_id", curriculum_element_id);
+
+            Database.ExecuteSqlRaw($@"
+                exec Delete
+                     @user_identifier,
+	                 @curriculum_element_id",
+                     pUserIdentifier,
+                     pCurriculumElementId
+            );
+        }
         public void SetStudentMark(int control_event_id, int student_id, DateTime date, int mark_type_id)
         {
             SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
@@ -143,6 +237,38 @@ namespace AcademPerfomance.Models
                  pStudentId,
                  pDate,
                  pMarkTypeId);
+        }
+        public void GenerateGroup(int direction_id, byte group_number, int admission_year)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pDirectionId = new SqlParameter("@direction_id", direction_id);
+            SqlParameter pGroupNumber = new SqlParameter("@group_number", group_number);
+            SqlParameter pAdmissionYear = new SqlParameter("@admission_year", admission_year);
+
+            Database.ExecuteSqlRaw($@"
+                exec GenerateGroup
+                     @user_identifier,
+	                 @direction_id,
+	                 @group_number,
+	                 @admission_year",
+                     pUserIdentifier,
+                     pDirectionId,
+                     pGroupNumber,
+                     pAdmissionYear
+            );
+        }
+        public void DeleteGroup(int group_id)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pGroupId = new SqlParameter("@group_id", group_id);
+
+            Database.ExecuteSqlRaw($@"
+                exec GenerateGroup
+                     @user_identifier,
+	                 @group_id",
+                     pUserIdentifier,
+                     pGroupId
+            );
         }
         public StudentControlMark? GetStudentControlMark(int? control_event_id, string? unique_id = null)
         {

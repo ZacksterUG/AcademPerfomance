@@ -62,10 +62,16 @@ namespace AcademPerfomance.Views.Pages
                 return;
             }
             UserControl? control = null;
-            if(objectType == ObjectType.Direction)
+            switch(objectType)
             {
-                control = new DirectionManip(actionType);
+                case ObjectType.Direction:
+                    control = new DirectionManip(actionType);
+                    break;
+                case ObjectType.Subject:
+                    control = new SubjectManip(actionType);
+                    break;
             }
+
             DependentPart.Navigate(control);
         }
 
