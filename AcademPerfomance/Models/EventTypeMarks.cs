@@ -17,6 +17,7 @@ namespace AcademPerfomance.Models
         {
             return new EventTypeMarksView
             {
+                name = "Не выбрано",
                 event_type_id = -1,
                 mark_value = "Нет оценки",
             };

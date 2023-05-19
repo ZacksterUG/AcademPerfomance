@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="AcademPerfomance.Views.Pages.OrgAction.CurriculumElementManip"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AcademPerfomance.Views.Pages.OrgAction"
+             mc:Ignorable="d" 
+             FontSize="16"
+             Foreground="#FFD8D8D8"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <local:OrgActionFilter x:Name="Filter" VisibilityTo="5"/>
+        <Separator Height="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+        <Grid Name="CurriculumInfoAdd">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="6*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" Content="Дисциплина: "/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Name="SubjectCB" ItemsSource="{Binding}" SelectedIndex="0" DisplayMemberPath="full_name"/>
+            <Label HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Content="Семестр: "/>
+            <ComboBox Grid.Row="1" Grid.Column="1" Name="SemesterCB" ItemsSource="{Binding}" SelectedIndex="0"/>
+            <Label HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" Content="Контрольное мероприятие: "/>
+            <ComboBox Grid.Row="2" Grid.Column="1" Name="ControlEventCB" ItemsSource="{Binding}" SelectedIndex="0" DisplayMemberPath="name"/>
+            <Label HorizontalAlignment="Right" Grid.Row="3" Grid.Column="0" Content="Курсовое мероприятие: "/>
+            <ComboBox Grid.Row="3" Grid.Column="1" Name="CourseEventCB" ItemsSource="{Binding}" SelectedIndex="0" DisplayMemberPath="name"/>
+            <Button Grid.Row="4" Grid.Column="1" Name="AddBtn" Width="200" HorizontalAlignment="Left" Margin="20 20 0 0" Content="Добавить" Click="AddBtn_Click"/>
+        </Grid>
+        <Grid Name="CurriculumInfoEdit">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="6*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" Content="Семестр: "/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Name="SemesterCB1" ItemsSource="{Binding}" SelectedIndex="0"/>
+            <Label HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Content="Контрольное мероприятие: "/>
+            <ComboBox Grid.Row="1" Grid.Column="1" Name="ControlEventCB1" ItemsSource="{Binding}" SelectedIndex="0" DisplayMemberPath="name"/>
+            <Label HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" Content="Курсовое мероприятие: "/>
+            <ComboBox Grid.Row="2" Grid.Column="1" Name="CourseEventCB1" ItemsSource="{Binding}" SelectedIndex="0" DisplayMemberPath="name"/>
+            <StackPanel Margin="0 20 0 0" Orientation="Horizontal" Grid.Row="4" Grid.Column="1">
+                <Button x:Name="SaveEditBtn" Width="170" HorizontalAlignment="Left" Margin="10,0,0,0" Click="SaveEditBtn_Click">Сохранить</Button>
+                <Button x:Name="DeleteBtn" Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}" Grid.Row="3" Grid.Column="1" Width="170" HorizontalAlignment="Left" Margin="35,0,0,0" Click="DeleteBtn_Click">Удалить дисциплину</Button>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

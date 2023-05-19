@@ -83,7 +83,7 @@ namespace AcademPerfomance.Views.Pages.OrgAction
             using ApplicationContext context = new();
             Institutes.AddRange(context.Institute.ToList());
         }
-        private void ResetVisibility(int val)
+        public void ResetVisibility(int val)
         {
             if (val == 0)
             {

@@ -30,7 +30,6 @@
                 <ComboBoxItem Content="Предмет"></ComboBoxItem>
                 <ComboBoxItem Content="Группа"></ComboBoxItem>
                 <ComboBoxItem Content="Учебный план"></ComboBoxItem>
-                <ComboBoxItem Content="Контрольное мероприятие"></ComboBoxItem>
             </ComboBox>            
             
             <Label Grid.Row="1" Grid.Column="0" Content="Действие: " HorizontalAlignment="Right" FontSize="16"/>

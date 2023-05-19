@@ -20,7 +20,7 @@
             MouseDown="Border_MouseDown">
         <materialDesign:DialogHost Name="dialog">
             <materialDesign:DialogHost.DialogContent>
-                <StackPanel HorizontalAlignment="Center" Width="350" Height="200" Background="#231232">
+                <StackPanel HorizontalAlignment="Center" Width="350" Background="#231232">
                     <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Name="DialogMessage" Margin="30" Foreground="White"/>
                     <Button Margin="120 10 120 10" Content="ОК" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Height="40"/>
                 </StackPanel>
@@ -64,7 +64,7 @@
                                 <Button Name="OrganiseActionsTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Организац. деятельность" Tag="4"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                                <Button Name="AdminActionsTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Администирование" Tag="4"/>
+                                <Button Name="AdminActionsTab" Click="SetTab" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Администрирование" Tag="4"/>
                             </Border>
                         </StackPanel>
                     </Border>

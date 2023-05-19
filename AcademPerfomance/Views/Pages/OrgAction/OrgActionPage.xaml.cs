@@ -17,12 +17,6 @@ using System.Windows.Shapes;
 
 namespace AcademPerfomance.Views.Pages
 {
-    public class EmptyPage : Page
-    {
-        public EmptyPage()
-        {
-        }
-    }
     public enum ActionType
     {
         None = 0,
@@ -35,8 +29,7 @@ namespace AcademPerfomance.Views.Pages
         Direction,
         Subject,
         Group,
-        CurriculumElement,
-        ControlEvent,
+        CurriculumElement
     }
     /// <summary>
     /// Логика взаимодействия для OrgActionPage.xaml
@@ -69,6 +62,12 @@ namespace AcademPerfomance.Views.Pages
                     break;
                 case ObjectType.Subject:
                     control = new SubjectManip(actionType);
+                    break;
+                case ObjectType.Group:
+                    control = new GroupManip(actionType);
+                    break;
+                case ObjectType.CurriculumElement:
+                    control = new CurriculumElementManip(actionType);
                     break;
             }
 

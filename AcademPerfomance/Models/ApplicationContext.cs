@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Data;
 using AcademPerfomance.Views;
 using System.Configuration;
+using System.Data.SqlTypes;
 
 namespace AcademPerfomance.Models
 {
@@ -148,7 +149,7 @@ namespace AcademPerfomance.Models
                     pSubjectName
             );
         }
-        public void AddSubject(int dep_subject_id, int department_id, string subject_name)
+        public void AddSubject(int department_id, string subject_name)
         {
             SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
             SqlParameter pDepartmentId = new SqlParameter("@department_id", department_id);
@@ -164,12 +165,14 @@ namespace AcademPerfomance.Models
                     pSubjectName
             );
         }
-        public void AppendCurriculumSubject(int group_id, int dep_subject_id, int semester)
+        public void AppendCurriculumSubject(int group_id, int dep_subject_id, int semester, int? control_event_id, int? course_event_id)
         {
             SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
             SqlParameter pGroupId = new SqlParameter("@group_id", group_id);
             SqlParameter pDepSubjectId = new SqlParameter("@dep_subject_id", dep_subject_id);
             SqlParameter pSemester = new SqlParameter("@semester", semester);
+            SqlParameter pControlEventId = new SqlParameter("@control_event_id", control_event_id ?? SqlInt32.Null);
+            SqlParameter pCourseEventId = new SqlParameter("@course_event_id", course_event_id ?? SqlInt32.Null);
 
             Database.ExecuteSqlRaw($@"
                 exec AppendCurriculumSubject
@@ -177,40 +180,84 @@ namespace AcademPerfomance.Models
 	                 @group_id,
 	                 @dep_subject_id,
 	                 @semester,
-	                 null,
-	                 null",
+	                 @control_event_id,
+	                 @course_event_id",
                      pUserIdentifier,
                      pGroupId,
                      pDepSubjectId,
-                     pSemester
+                     pSemester,
+                     pControlEventId,
+                     pCourseEventId
             );
         }
-        public void EditCurriculumElement(int curriculum_element_id, int dep_subject_id, int semester)
+        public void EditCurriculumElement(int curriculum_element_id, int semester)
         {
             SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
             SqlParameter pCurriculumElementId = new SqlParameter("@curriculum_element_id", curriculum_element_id);
-            SqlParameter pDepSubjectId = new SqlParameter("@dep_subject_id", dep_subject_id);
             SqlParameter pSemester = new SqlParameter("@semester", semester);
 
             Database.ExecuteSqlRaw($@"
                 exec EditCurriculumElement
                      @user_identifier,
 	                 @curriculum_element_id,
-	                 @dep_subject_id,
 	                 @semester",
                      pUserIdentifier,
                      pCurriculumElementId,
-                     pDepSubjectId,
                      pSemester
             );
         }
-        public void DeleteCurriculumElement(int curriculum_element_id, int dep_subject_id, int semester)
+        public void EditControlEvent(int control_event_id, int control_event_type)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pControlEventId = new SqlParameter("@control_event_id", control_event_id);
+            SqlParameter pControlEventType = new SqlParameter("@control_event_type", control_event_type);
+
+            Database.ExecuteSqlRaw($@"
+                exec EditControlEvent
+                     @user_identifier,
+	                 @control_event_id,
+                     @control_event_type",
+                     pUserIdentifier,
+                     pControlEventId,
+                     pControlEventType
+            );
+        }
+        public void DeleteControlEvent(int control_event_id)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pControlEventId = new SqlParameter("@control_event_id", control_event_id);
+
+            Database.ExecuteSqlRaw($@"
+                exec DeleteControlEvent
+                     @user_identifier,
+	                 @control_event_id",
+                     pUserIdentifier,
+                     pControlEventId
+            );
+        }
+        public void AddControlEvent(int curriculum_element_id, int control_event_type)
+        {
+            SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
+            SqlParameter pCurriculumElementId = new SqlParameter("@curriculum_element_id", curriculum_element_id);
+            SqlParameter pControlEventType = new SqlParameter("@control_event_type", control_event_type);
+            
+            Database.ExecuteSqlRaw($@"
+                exec AddControlEvent
+                     @user_identifier,
+	                 @curriculum_element_id,
+                     @control_event_type",
+                     pUserIdentifier,
+                     pCurriculumElementId,
+                     pControlEventType
+            );
+        }
+        public void DeleteCurriculumElement(int curriculum_element_id)
         {
             SqlParameter pUserIdentifier = new SqlParameter("@user_identifier", User.CurrentUser?.unique_id);
             SqlParameter pCurriculumElementId = new SqlParameter("@curriculum_element_id", curriculum_element_id);
 
             Database.ExecuteSqlRaw($@"
-                exec Delete
+                exec DeleteCurriculumElement
                      @user_identifier,
 	                 @curriculum_element_id",
                      pUserIdentifier,
@@ -263,7 +310,7 @@ namespace AcademPerfomance.Models
             SqlParameter pGroupId = new SqlParameter("@group_id", group_id);
 
             Database.ExecuteSqlRaw($@"
-                exec GenerateGroup
+                exec DeleteGroup
                      @user_identifier,
 	                 @group_id",
                      pUserIdentifier,

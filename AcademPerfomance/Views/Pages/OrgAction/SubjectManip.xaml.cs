@@ -88,18 +88,24 @@ namespace AcademPerfomance.Views.Pages.OrgAction
         {
             try
             {
-                DisciplineTB.Text = "";
+                string subject_name = DisciplineTB.Text;
+                int department_id = Filter.SelectedDepartment.department_id;
 
+                using ApplicationContext context = new();
                 if (action == ActionType.Add)
                 {
+                    context.AddSubject(department_id, subject_name);
                     MainWindow.mainWindow.ShowMessage("Дисциплина успешно добавлена!");
                 }
                 if (action == ActionType.Edit)
                 {
+                    int dep_subject_id = (DisciplineCB.SelectedItem as SubjectView).dep_subjects_id;
+                    context.EditSubject(dep_subject_id, department_id, subject_name);
                     MainWindow.mainWindow.ShowMessage("Изменения сохранены успешно!");
                     Filter.ResetComboBoxes(1);
                     Filter.DepartmentCB.SelectedIndex = 0;
                 }
+                DisciplineTB.Text = "";
             }
             catch(Exception err)
             {

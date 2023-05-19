@@ -16,6 +16,7 @@ namespace AcademPerfomance.Models
             return new ControlEvent
             {
                 control_id = -1,
+                control_type_id = -1,
                 control_name = "Не выбрано"
             };
         }
